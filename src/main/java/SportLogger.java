@@ -3,23 +3,28 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class SportLogger {
-    private static final Scanner scanner = new Scanner(System.in);
-    private static HashMap<String, Integer> activityMap = new HashMap<String, Integer>();
+    private final Scanner scanner;
+    private final HashMap<String, Integer> activityMap;
     private static boolean flag;
 
-    private static void displayLoggedActivities() {
+    public SportLogger() {
+        this.scanner = new Scanner(System.in);
+        this.activityMap = new HashMap<>();
+    }
+
+    public void displayLoggedActivities() {
         for (Map.Entry<String, Integer> activity : activityMap.entrySet()) {
             System.out.println("Activity: " + activity.getKey() + "\n" + "Time spent: " + activity.getValue());
             System.out.println("═══════════════════════════════════════");
         }
     }
 
-    private static void addActivity(String name, int timeSpent) {
+    public void addActivity(String name, int timeSpent) {
         activityMap.put(name, timeSpent);
         System.out.println("Activity " + name + "added to logged.");
     }
 
-    private static void checkTotalTime() {
+    public void checkTotalTime() {
         double totalTimeSpent = 0;
         for (Map.Entry<String, Integer> activity : activityMap.entrySet()) {
             totalTimeSpent += activity.getValue();
@@ -27,7 +32,7 @@ public class SportLogger {
         System.out.printf("\nTotal time spent on activities this week: %.2f hours.\n", totalTimeSpent / 60);
     }
 
-    private static void start() {
+    private void start() {
         System.out.println("SportLogger-9000");
         flag = true;
         while (flag) {
@@ -46,7 +51,11 @@ public class SportLogger {
         }
     }
 
-    public static void handleAddActivity() {
+    public HashMap<String, Integer> getActivityMap() {
+        return activityMap;
+    }
+
+    public void handleAddActivity() {
         System.out.print("\nType name of your activity: ");
         String name = scanner.nextLine();
         System.out.print("\nType minutes you used in that activity: ");
@@ -54,13 +63,21 @@ public class SportLogger {
         addActivity(name, time);
     }
 
-    public static void handleExit() {
+    public void handleExit() {
         flag = false;
         System.out.println("Closing program, see you!");
     }
 
+    public int getTotalTime() {
+        int total = 0;
+        for (Map.Entry<String, Integer> activity : activityMap.entrySet()) {
+            total += activity.getValue();
+        }
+        return total;
+    }
+
 
     public static void main(String[] args) {
-        start();
+        new SportLogger().start();
     }
 }
